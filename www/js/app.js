@@ -14,8 +14,16 @@ var app = {
 
 // Authorized Hrefs
 var authorizedHrefs = [
+//  '/',
+//  '/chat.html',
+//  '/create.html',
+//  '/customendpoint.html',
+//  '/files.html',
+//  '/index.html',
   '/logout.html',
   '/profile.html',
+//  '/update.html',
+//  '/upload.html'
 ];
 
 // Initialize Kinvey
