@@ -28,8 +28,8 @@ var authorizedHrefs = [
 
 // Initialize Kinvey
 var client = Kinvey.init({
-  appKey: 'kid_rJQ3fa0il',
-  appSecret: 'f934cde41bef41368bfa778692e690aa'
+  appKey: 'kid_Bk8sac2xM',
+  appSecret: '1c52a433ff97402892185788463ce5e0'
 });
 
 var activeUser = Kinvey.User.getActiveUser(client);
