@@ -14,16 +14,8 @@ var app = {
 
 // Authorized Hrefs
 var authorizedHrefs = [
-  '/',
-  '/chat.html',
-  '/create.html',
-  '/customendpoint.html',
-  '/files.html',
-  '/index.html',
   '/logout.html',
   '/profile.html',
-  '/update.html',
-  '/upload.html'
 ];
 
 // Initialize Kinvey
@@ -34,11 +26,15 @@ var client = Kinvey.init({
 
 var activeUser = Kinvey.User.getActiveUser(client);
 
+
 if (!activeUser && authorizedHrefs.indexOf(location.pathname) !== -1) {
+<<<<<<< HEAD
   location.replace('/index.html');
 } else if (activeUser && authorizedHrefs.indexOf(location.pathname) === -1) {
   location.replace('/login.html');
 }
+=======
+>>>>>>> e752d1ae5ebc5d9f7a716952002b1c7cafc3019c
 
 $(document).ready(function() {
   $(document).trigger('app.ready');
