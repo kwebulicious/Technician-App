@@ -14,16 +14,16 @@ var app = {
 
 // Authorized Hrefs
 var authorizedHrefs = [
-  '/',
-  '/chat.html',
-  '/create.html',
-  '/customendpoint.html',
-  '/files.html',
-  '/index.html',
+//  '/',
+//  '/chat.html',
+//  '/create.html',
+//  '/customendpoint.html',
+//  '/files.html',
+//  '/index.html',
   '/logout.html',
   '/profile.html',
-  '/update.html',
-  '/upload.html'
+//  '/update.html',
+//  '/upload.html'
 ];
 
 // Initialize Kinvey
@@ -34,11 +34,13 @@ var client = Kinvey.init({
 
 var activeUser = Kinvey.User.getActiveUser(client);
 
+
 if (!activeUser && authorizedHrefs.indexOf(location.pathname) !== -1) {
   location.replace('/login.html');
-} else if (activeUser && authorizedHrefs.indexOf(location.pathname) === -1) {
+}/* else if (activeUser && authorizedHrefs.indexOf(location.pathname) === -1) {
   location.replace('/index.html');
-}
+}*/
+
 
 $(document).ready(function() {
   $(document).trigger('app.ready');
