@@ -37,6 +37,7 @@ var activeUser = Kinvey.User.getActiveUser(client);
 
 if (!activeUser && authorizedHrefs.indexOf(location.pathname) !== -1) {
   location.replace('/index.html');
+} /*else if (activeUser && authorizedHrefs.indexOf(location.pathname) === -1) {
   location.replace('/login.html');
 }
 <<<<<<< HEAD
