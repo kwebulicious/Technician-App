@@ -52,7 +52,6 @@ if (!activeUser && authorizedHrefs.indexOf(location.pathname) !== -1) {
 }*/
 =======
   */
->>>>>>> 7369ba3a45c103c5ee97ef143c2d3a7d4d210156
 
 
 $(document).ready(function() {
