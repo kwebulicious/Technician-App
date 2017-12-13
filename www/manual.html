@@ -29,7 +29,7 @@
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="navbar-collapse">
+                <div class="collapse navbar-collapse" id="navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="dropdown">
               <a id="books-dropdown" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Diagnostics <span class="caret"></span></a>
@@ -53,7 +53,6 @@
               <a id="account-dropdown" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="/profile.html">Profile</a></li>
-                <li><a href="/admin.html">Dashboard</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a href="/logout.html">Logout</a></li>
               </ul>
@@ -77,12 +76,24 @@
 
           <div class="row">
               
-            <div class="banner">
-                <h1>Autonomous Diagnostics</h1>
-                  <div id="engine" class="column"></div>
-                  <div id="code" class="column"></div>
-            </div>   
-                
+              
+              <div class="banner">
+                <h1>Manual Diagnostics</h1>
+                <div class="column1">
+                   <select class="form-control form-control-lg" id="selected" placeholder="Select" style="margin-bottom:1%;" >
+                        <option value="">Select a code</option>
+                        <option value="P2516" onclick="var dataStoreType = app.getParameterByName('datastoretype'); dataStoreType = dataStoreType || Kinvey.DataStoreType.Cache;reload(dataStoreType);">P2516</option>
+                        <option value="P3437"onclick="var dataStoreType = app.getParameterByName('datastoretype'); dataStoreType = dataStoreType || Kinvey.DataStoreType.Cache;reload(dataStoreType);">P3437</option>
+                        <option value="P0091"onclick="var dataStoreType = app.getParameterByName('datastoretype'); dataStoreType = dataStoreType || Kinvey.DataStoreType.Cache;reload(dataStoreType);">P0091</option>
+
+                      </select>
+
+                </div>             
+                <div id="description" class="column2"></div>
+              </div>
+              
+              
+              
             <div class="col-md-12">
 
               <div class="page-header">
@@ -99,31 +110,10 @@
                     dataStoreType = dataStoreType || Kinvey.DataStoreType.Cache;
                     reload(dataStoreType);
                   ">Reload</button>
-                  <button type="button" class="btn btn-primary" onclick="
-                    var ids = [];
-                                              
 
-                    // Get all the selected books
-                    $('input:checkbox.book-checkbox').each(function () {
-                      var id = (this.checked ? $(this).val() : undefined);
 
-                      if (id) {
-                        ids.push(id);
-                      }
-                    });
 
-                    if (ids.length === 0) {
-                      return alert('Please click the checkbox beneath the recommended steps.');
-                    }
 
-                    if (ids.length > 1) {
-                      return alert('Please select only one diagnosis to provide feedback on.');
-                    }
-                                                                                                                           
-
-                    var dataStoreType = app.getParameterByName('datastoretype');
-                    location.replace('/feedback.html?datastoretype=' + (dataStoreType || 'cache') + '&id=' + ids[0]);
-                  ">Feedback</button>
 
 
                 </div>
@@ -146,75 +136,46 @@
     <script>
       // Render the table
       function renderTable(books, selector) {
-
+        
+          
+        
         // Default books to an empty array
         books = books || [];
-        var code_eng = [];
+        var selected = $('#selected').val();
+        console.log(selected);
+          
+        var codeinject = '';
+        var descriptioninject = '';
         // Create the rows
         var rows = books.map(function(book) {
-          code_eng.push(
 
-              [book.title, book.code, book.description]
-          );
+            if (book.code == selected){
+                codeinject = book.code;
+                descriptioninject = book.description;
 
-/*          return '<tr>\n'
-            + '<td><input type="checkbox" value="' + book._id + '" class="book-checkbox"/></td>'
-            + '<td>' + (book.code || '') + '</td>\n'
-            + '<td>' + (book.description || '') + '</td>\n'
-            + '<td>' + (book.step1 || '') + '</td>\n'
-            + '<td>' + (book.step2 || '') + '</td>\n'
-            + '<td>' + (book.step3 || '') + '</td>\n'
-            + '<td>' + (book.step4 || '') + '</td>\n'
-            + '</tr>';*/
-            
-        return  '<div class="resultrow"><div class="resultcolumnsteps"><h4 style="font-size:28px;">Step 1</h4></div><div class="resultcolumndirections"><h4 style="font-size:20px;">' + (book.step1 || '') + '</h4></div></div>\n'
-            + '<hr><div class="resultrow"><div class="resultcolumnsteps"><h4 style="font-size:28px;">Step 2</h4></div><div class="resultcolumndirections"><h4 style="font-size:20px;">' + (book.step2 || '') + '</h4></div></div>\n'
-            + '<hr><div class="resultrow"><div class="resultcolumnsteps"><h4 style="font-size:28px;">Step 3</h4></div><div class="resultcolumndirections"><h4 style="font-size:20px;">' + (book.step3 || '') + '</h4></div></div>\n'
-            + '<hr><div class="resultrow"><div class="resultcolumnsteps"><h4 style="font-size:28px;">Step 4</h4></div><div class="resultcolumndirections"><h4 style="font-size:20px;">' + (book.step4 || '') + '</h4></div></div>\n'
-            + '<hr><p>Did this diagnosis not solve your problem? Check this box and click our "Feedback" button below.   <input type="checkbox" value="' + book._id + '" class="book-checkbox"/></p>\n'
-;
+                
+                return  '<div class="resultrow"><div class="resultcolumnsteps"><h4 style="font-size:28px;">Step 1</h4></div><div class="resultcolumndirections"><h4 style="font-size:20px;">' + (book.step1 || '') + '</h4></div></div>\n'
+                    + '<hr><div class="resultrow"><div class="resultcolumnsteps"><h4 style="font-size:28px;">Step 2</h4></div><div class="resultcolumndirections"><h4 style="font-size:20px;">' + (book.step2 || '') + '</h4></div></div>\n'
+                    + '<hr><div class="resultrow"><div class="resultcolumnsteps"><h4 style="font-size:28px;">Step 3</h4></div><div class="resultcolumndirections"><h4 style="font-size:20px;">' + (book.step3 || '') + '</h4></div></div>\n'
+                    + '<hr><div class="resultrow"><div class="resultcolumnsteps"><h4 style="font-size:28px;">Step 4</h4></div><div class="resultcolumndirections"><h4 style="font-size:20px;">' + (book.step4 || '') + '</h4></div></div>\n'
+                    + '<hr><p>Did this diagnosis not solve your problem? Check this box and click our "Feedback" button below.   <input type="checkbox" value="' + book._id + '" class="book-checkbox"/></p>\n'
 
+            }
         });
-        randIndice = Math.floor((Math.random() * 3));  
-
-        // Create the table
-/*        var html = '<table class="table table-striped table-bordered">\n'
-          +   '<thead>\n'
-          +     '<tr>\n'
-          +       '<th></th>'
-          +       '<th>Code</th>\n'
-          +       '<th>Description</th>\n'
-          +       '<th>Step 1</th>\n'
-          +       '<th>Step 2</th>\n'
-          +       '<th>Step 3</th>\n'
-          +       '<th>Step 4</th>\n'
-          +     '</tr>\n'
-          +   '</thead>\n'
-          +   '<tbody>\n'
-          +     rows[randIndice]
-          +   '</tbody>\n'
-          + '</table>\n';*/
+         
+      
           
+        
         var html = '<div class=results>\n'
-          +     rows[randIndice]
+          + rows
           + '</div>\n';
-
-        //Pass the fault code and engine info to other html element
-        chosen = code_eng[randIndice];
-        console.log(chosen);
-        
-        engines = [{_id:3,model:"6.7L Cummins Turbo Diesel",mileage:150002,hours:3750.8},{_id:2,model:"X12 for Heavy-Duty Truck",mileage:85670,hours:1070.6},{_id:1,model:"X15 Performance Series",mileage:0,hours:0}];
           
-        chosen_engine = engines[randIndice];
-          
-        var html2 = '<h3>Engine: <strong>'+ chosen_engine.model+'</strong> </h3> \n <h4>Mileage: '+chosen_engine.mileage+' miles</h4>';
-        var html3 = '<h3>Fault Code: <strong>'+ chosen[1]+'</strong> </h3>\n <h4>Diagnosis: '+chosen[2]+'</h4>';
-        
+        var html2 = '<h3>Fault Code: <strong>'+ codeinject+'</strong> </h3> \n <h4>Description: '+descriptioninject+'</h4>';
           
         // Add the html to the page
         $(selector).html(html);
-        $('#engine').html(html2);
-        $('#code').html(html3);
+        $('#description').html(html2);
+
 
       }
 
@@ -242,8 +203,5 @@
       });
     </script>
       
-
-      
-
   </body>
 </html>

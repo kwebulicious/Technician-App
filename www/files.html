@@ -25,34 +25,47 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Kinvey Starter</a>
+          <a class="navbar-brand" href="#">CDS</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <div class="collapse navbar-collapse" id="navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="dropdown">
-              <a id="books-dropdown" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">DataStore <span class="caret"></span></a>
+              <a id="books-dropdown" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Diagnostics <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="/index.html?datastoretype=Network">NetworkStore</a></li>
-                <li><a href="/index.html?datastoretype=Cache">CacheStore</a></li>
-                <li><a href="/index.html?datastoretype=Sync">SyncStore</a></li>
+                <li><a href="/index.html?datastoretype=Network">Autonamous Diagnostics (network)</a></li>
+                <li><a href="/manual.html?datastoretype=Cache">Manual Diagnostics (Cache)</a></li>
+
               </ul>
             </li>
-            <li class="active"><a href="/files.html">Files</a></li>
-            <li><a href="/customendpoint.html">Custom Endpoint</a></li>
+            <li><a href="/files.html">Manuals</a></li>
+
           </ul>
+            
+            
+
+            
+            
+            
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
               <a id="account-dropdown" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="/profile.html">Profile</a></li>
-                <li><a href="/chat.html">Chat</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a href="/logout.html">Logout</a></li>
               </ul>
             </li>
           </ul>
+            
+          <ul class="nav navbar-nav navbar-right">  
+            <div id="google_translate_element"></div><script type="text/javascript">
+            function googleTranslateElementInit() {
+              new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.FloatPosition.TOP_LEFT, autoDisplay: false}, 'google_translate_element');
+            }
+            </script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script> 
+          </ul> 
         </div>
       </div>
     </nav>
@@ -61,43 +74,13 @@
       <div class="row">
         <div class="col-md-12">
           <div class="page-header">
-            <h1>Files Collection</h1>
+            <h1>Manuals Collection</h1>
           </div>
           <div id="files-table" class="table-responsive"></div>
           <div class="clearfix">
             <div class="pull-right">
               <button type="button" class="btn btn-default" onclick="reload();">Reload</button>
-              <button type="button" class="btn btn-success" onclick="location.replace('/upload.html');">Upload</button>
-              <button type="button" class="btn btn-danger" onclick="
-                var ids = [];
 
-                // Get all the selected files
-                $('input:checkbox.file-checkbox').each(function () {
-                  var id = (this.checked ? $(this).val() : undefined);
-
-                  if (id) {
-                    ids.push(id);
-                  }
-                });
-
-                if (ids.length === 0) {
-                  return alert('Please select the files you would like to remove.');
-                }
-
-                if (ids.length > 1) {
-                  return alert('Please select only one file to remove.');
-                }
-
-                // Remove the file
-                Kinvey.Files.removeById(ids[0])
-                  .then(function(results) {
-                    console.log(results);
-                    reload();
-                  })
-                  .catch(function(error) {
-                    alert(error.message);
-                  });
-              ">Remove</button>
             </div>
           </div>
         </div>
@@ -117,24 +100,23 @@
 
           // Create the rows
           var rows = files.map(function(file) {
-            return '<tr>\n'
-              + '<td><input type="checkbox" value="' + file._id + '" class="file-checkbox"/></td>'
-              + '<td>' + file._filename + '</td>\n'
-              + '<td>' + file.mimeType + '</td>\n'
-              + '<td>' + file._public + '</td>\n'
-              + '<td><a target="_blank" href="' + file._downloadURL + '">Download URL</a></td>\n'
-              + '</tr>';
+            if (file.mimeType === "application/pdf"){
+                  return '<tr>\n'
+
+                  + '<td>' + file._filename + '</td>\n'
+                  + '<td>' + file.Description + '</td>\n'
+                  + '<td><a target="_blank" href="' + file._downloadURL + '">Download URL</a></td>\n'
+                  + '</tr>';
+            }
           });
 
           // Create the table
           var html = '<table class="table table-striped">\n'
             +   '<thead>\n'
             +     '<tr>\n'
-            +       '<th></th>'
-            +       '<th>Filename</th>\n'
-            +       '<th>MIME Type</th>\n'
-            +       '<th>Public</th>\n'
-            +       '<th>Url</th>\n'
+            +       '<th>Resource Name</th>\n'
+            +       '<th>Description</th>\n'
+            +       '<th>Download</th>\n'
             +     '</tr>\n'
             +   '</thead>\n'
             +   '<tbody>\n'

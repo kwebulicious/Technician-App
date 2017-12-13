@@ -1,0 +1,596 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<!--    <meta http-equiv="x-ua-compatible" content="ie=edge">-->
+    <title>Cummins Diagnostic Tool</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/todc-bootstrap.min.css">
+    <link rel="stylesheet" href="css/app.css">
+    
+ 
+      
+      
+  </head>
+  <body>
+    <!--[if lte IE 9]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+    <![endif]-->
+
+    <nav class="navbar navbar-masthead navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">CDS</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a id="books-dropdown" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Diagnostics <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/index.html?datastoretype=Network">Autonamous Diagnostics (network)</a></li>
+                <li><a href="/manual.html?datastoretype=Cache">Manual Diagnostics (Cache)</a></li>
+
+              </ul>
+            </li>
+            <li><a href="/files.html">Manuals</a></li>
+
+          </ul>
+            
+            
+
+            
+            
+            
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a id="account-dropdown" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/profile.html">Profile</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="/logout.html">Logout</a></li>
+              </ul>
+            </li>
+          </ul>
+            
+          <ul class="nav navbar-nav navbar-right">  
+            <div id="google_translate_element"></div><script type="text/javascript">
+            function googleTranslateElementInit() {
+              new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.FloatPosition.TOP_LEFT, autoDisplay: false}, 'google_translate_element');
+            }
+            </script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script> 
+          </ul> 
+        </div>
+      </div>
+    </nav>
+
+<!-- BEGIN CONTENT AREA -->    
+    <div class="container">
+        
+
+
+      <div class="row"  >
+          <div class="row">
+              <div class="row">
+                  <div class="column">
+                    <h1>Analytics Dashboard</h1>
+                  </div>
+                  <div class="columnadmin" style="float:none;">
+                    <div class="counter" data-count="156">0</div>
+                    <h4>Registered Users</h4>
+                  </div>
+                  <div class="columnadmin" style="float:none;">
+                    <div class="counter" data-count="1634" style="background-color:rgba(22, 106, 167, .6);">0</div>
+                    <h4>Auto Diagnoses</h4>
+                  </div>
+              </div>
+                    <div class="col-md-12">
+
+                      <div class="page-header">
+
+                      </div> 
+
+
+                      <div id="books-table" class="table-responsive"></div>
+                      <div class="clearfix">
+
+
+
+
+                      </div>
+                    </div>
+        </div>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/2kinvey-html5-sdk.min.js"></script>
+    <script src="js/app.js"></script>
+      <Script>
+        //counter
+            $('.counter').each(function() {
+          var $this = $(this),
+              countTo = $this.attr('data-count');
+
+          $({ countNum: $this.text()}).animate({
+            countNum: countTo
+          },
+
+          {
+
+            duration: 5000,
+            easing:'swing',
+            step: function() {
+              $this.text(Math.floor(this.countNum));
+            },
+            complete: function() {
+              $this.text(this.countNum);
+              //alert('finished');
+            }
+
+          });  
+
+
+
+        });
+        
+
+
+      </Script> 
+      
+ <!--    highcharts api  -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/drilldown.js"></script>
+      <div class="container">
+          <div class="row"> 
+            <div id="chart1" style="min-width: 100%; height: 400px; margin: 0 auto"></div>
+          </div>
+          <div class="row">
+            <div id="chart2" style="min-width: 49.5%; height: 400px; display:inline-block;"></div>
+            <div id="chart3" style="min-width: 49.5%; height: 400px; display:inline-block; float:right;"></div>
+          </div>
+      </div>
+      
+      
+      
+    <script>
+
+        
+    // start theme
+        
+        
+        
+        
+        
+
+        Highcharts.createElement('link', {
+           href: 'https://fonts.googleapis.com/css?family=Unica+One',
+           rel: 'stylesheet',
+           type: 'text/css'
+        }, null, document.getElementsByTagName('head')[0]);
+
+        Highcharts.theme = {
+           colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
+              '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
+           chart: {
+              backgroundColor: {
+                 linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
+                 stops: [
+                    [0, '#2a2a2b'],
+                    [1, '#3e3e40']
+                 ]
+              },
+              style: {
+                 fontFamily: '\'Unica One\', sans-serif'
+              },
+              plotBorderColor: '#606063'
+           },
+           title: {
+              style: {
+                 color: '#E0E0E3',
+                 textTransform: 'uppercase',
+                 fontSize: '20px'
+              }
+           },
+           subtitle: {
+              style: {
+                 color: '#E0E0E3',
+                 textTransform: 'uppercase'
+              }
+           },
+           xAxis: {
+              gridLineColor: '#707073',
+              labels: {
+                 style: {
+                    color: '#E0E0E3'
+                 }
+              },
+              lineColor: '#707073',
+              minorGridLineColor: '#505053',
+              tickColor: '#707073',
+              title: {
+                 style: {
+                    color: '#A0A0A3'
+
+                 }
+              }
+           },
+           yAxis: {
+              gridLineColor: '#707073',
+              labels: {
+                 style: {
+                    color: '#E0E0E3'
+                 }
+              },
+              lineColor: '#707073',
+              minorGridLineColor: '#505053',
+              tickColor: '#707073',
+              tickWidth: 1,
+              title: {
+                 style: {
+                    color: '#A0A0A3'
+                 }
+              }
+           },
+           tooltip: {
+              backgroundColor: 'rgba(0, 0, 0, 0.85)',
+              style: {
+                 color: '#F0F0F0'
+              }
+           },
+           plotOptions: {
+              series: {
+                 dataLabels: {
+                    color: '#B0B0B3'
+                 },
+                 marker: {
+                    lineColor: '#333'
+                 }
+              },
+              boxplot: {
+                 fillColor: '#505053'
+              },
+              candlestick: {
+                 lineColor: 'white'
+              },
+              errorbar: {
+                 color: 'white'
+              }
+           },
+           legend: {
+              itemStyle: {
+                 color: '#E0E0E3'
+              },
+              itemHoverStyle: {
+                 color: '#FFF'
+              },
+              itemHiddenStyle: {
+                 color: '#606063'
+              }
+           },
+           credits: {
+              style: {
+                 color: '#666'
+              }
+           },
+           labels: {
+              style: {
+                 color: '#707073'
+              }
+           },
+
+           drilldown: {
+              activeAxisLabelStyle: {
+                 color: '#F0F0F3'
+              },
+              activeDataLabelStyle: {
+                 color: '#F0F0F3'
+              }
+           },
+
+           navigation: {
+              buttonOptions: {
+                 symbolStroke: '#DDDDDD',
+                 theme: {
+                    fill: '#505053'
+                 }
+              }
+           },
+
+           // scroll charts
+           rangeSelector: {
+              buttonTheme: {
+                 fill: '#505053',
+                 stroke: '#000000',
+                 style: {
+                    color: '#CCC'
+                 },
+                 states: {
+                    hover: {
+                       fill: '#707073',
+                       stroke: '#000000',
+                       style: {
+                          color: 'white'
+                       }
+                    },
+                    select: {
+                       fill: '#000003',
+                       stroke: '#000000',
+                       style: {
+                          color: 'white'
+                       }
+                    }
+                 }
+              },
+              inputBoxBorderColor: '#505053',
+              inputStyle: {
+                 backgroundColor: '#333',
+                 color: 'silver'
+              },
+              labelStyle: {
+                 color: 'silver'
+              }
+           },
+
+           navigator: {
+              handles: {
+                 backgroundColor: '#666',
+                 borderColor: '#AAA'
+              },
+              outlineColor: '#CCC',
+              maskFill: 'rgba(255,255,255,0.1)',
+              series: {
+                 color: '#7798BF',
+                 lineColor: '#A6C7ED'
+              },
+              xAxis: {
+                 gridLineColor: '#505053'
+              }
+           },
+
+           scrollbar: {
+              barBackgroundColor: '#808083',
+              barBorderColor: '#808083',
+              buttonArrowColor: '#CCC',
+              buttonBackgroundColor: '#606063',
+              buttonBorderColor: '#606063',
+              rifleColor: '#FFF',
+              trackBackgroundColor: '#404043',
+              trackBorderColor: '#404043'
+           },
+
+           // special colors for some of the
+           legendBackgroundColor: 'rgba(0, 0, 0, 0.5)',
+           background2: '#505053',
+           dataLabelsColor: '#B0B0B3',
+           textColor: '#C0C0C0',
+           contrastTextColor: '#F0F0F3',
+           maskColor: 'rgba(255,255,255,0.3)'
+        };
+
+        // Apply the theme
+        Highcharts.setOptions(Highcharts.theme);  
+        
+        
+        
+        
+      //  end theme        
+        
+        
+        
+        
+        
+        
+            Highcharts.chart('chart1', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Diagnosis by Engine Model'
+            },
+            xAxis: {
+                categories: ['X15 Performance Series', 'X12 for Heavy-Duty Truck', '6.7L Cummins Turbo Diesel']
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Total Code Diagnosis'
+                },
+                stackLabels: {
+                    enabled: true,
+                    style: {
+                        fontWeight: 'bold',
+                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                    }
+                }
+            },
+            legend: {
+                align: 'right',
+                x: -30,
+                verticalAlign: 'top',
+                y: 25,
+                floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                borderColor: '#CCC',
+                borderWidth: 1,
+                shadow: false
+            },
+            tooltip: {
+                headerFormat: '<b>{point.x}</b><br/>',
+                pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+            },
+            plotOptions: {
+                column: {
+                    stacking: 'normal',
+                    dataLabels: {
+                        enabled: true,
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                    }
+                }
+            },
+            series: [{
+                name: 'P3437',
+                data: [1, 1, 2]
+            }, {
+                name: 'P2516',
+                data: [0, 2, 4]
+            }, {
+                name: 'P0091',
+                data: [0, 2, 2]
+            }]
+            });
+            
+        
+        
+            Highcharts.chart('chart2', {
+            chart: {
+                type: 'pie'
+            },
+            title: {
+                text: '% Of Total Mileage By Engine Fault Code'
+            },
+            subtitle: {
+                text: 'Click to drill down'
+            },
+            plotOptions: {
+                series: {
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.name}: {point.y:.1f}%'
+                    }
+                }
+            },
+
+            tooltip: {
+                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+            },
+            series: [{
+                name: 'Engines',
+                colorByPoint: true,
+                data: [{
+                    name: 'X15 Performance Series',
+                    y: 0,
+                    drilldown: 'X15 Performance Series'
+                }, {
+                    name: 'X12 for Heavy-Duty Truck',
+                    y: 41,
+                    drilldown: 'X12 for Heavy-Duty Truck'
+                }, {
+                    name: '6.7L Cummins Turbo Diesel',
+                    y: 59,
+                    drilldown: '6.7L Cummins Turbo Diesel'
+                }]
+            }],
+            drilldown: {
+                series: [{
+                    name: 'X15 Performance Series',
+                    id: 'X15 Performance Series',
+                    data: [
+                        ['P3437', 0],
+                        ['P2516', 0],
+                        ['P0091', 0]
+                        
+                    ]
+                }, {
+                    name: 'X12 for Heavy-Duty Truck',
+                    id: 'X12 for Heavy-Duty Truck',
+                    data: [
+                        ['P3437', 27],
+                        ['P2516', 35],
+                        ['P0091', 38]
+                    ]
+                }, {
+                    name: '6.7L Cummins Turbo Diesel',
+                    id: '6.7L Cummins Turbo Diesel',
+                    data: [
+                        ['P3437', 8],
+                        ['P2516', 62],
+                        ['P0091', 30]
+                    ]
+                }]
+            }
+        });
+      
+        
+        $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=usdeur.json&callback=?', function (data) {
+
+        Highcharts.chart('chart3', {
+            chart: {
+                zoomType: 'x'
+            },
+            title: {
+                text: 'Average Number of Hourly Diagnoses'
+            },
+            subtitle: {
+                text: document.ontouchstart === undefined ?
+                        'Per Day' : 'Per Day'
+            },
+            xAxis: {
+                type: 'datetime'
+            },
+            yAxis: {
+                title: {
+                    text: 'Average Hourly Diagnoses'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                area: {
+                    fillColor: {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                    },
+                    marker: {
+                        radius: 2
+                    },
+                    lineWidth: 1,
+                    states: {
+                        hover: {
+                            lineWidth: 1
+                        }
+                    },
+                    threshold: null
+                }
+            },
+
+            series: [{
+                type: 'area',
+                name: 'Rate of Diagnosis',
+                data: data
+            }]
+        });
+    });
+        
+     
+
+        
+        
+    </script>
+      
+    <div class ="footer">
+        <div class="logo"><img src="img/cummins.png"></div>
+    </div>
+  </body>
+</html>

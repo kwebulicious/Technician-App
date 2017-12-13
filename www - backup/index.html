@@ -76,13 +76,9 @@
     <div class="container">
 
           <div class="row">
-              
-            <div class="banner">
-                <h1>Autonomous Diagnostics</h1>
-                  <div id="engine" class="column"></div>
-                  <div id="code" class="column"></div>
-            </div>   
-                
+            <h1>Autonamous Diagnostics</h1>
+              <div id="engine" class="column"></div>
+              <div id="code" class="column"></div>
             <div class="col-md-12">
 
               <div class="page-header">
@@ -101,7 +97,6 @@
                   ">Reload</button>
                   <button type="button" class="btn btn-primary" onclick="
                     var ids = [];
-                                              
 
                     // Get all the selected books
                     $('input:checkbox.book-checkbox').each(function () {
@@ -113,28 +108,113 @@
                     });
 
                     if (ids.length === 0) {
-                      return alert('Please click the checkbox beneath the recommended steps.');
+                      return alert('Please select the diagnosis you would like to update.');
                     }
 
                     if (ids.length > 1) {
-                      return alert('Please select only one diagnosis to provide feedback on.');
+                      return alert('Please select only one book to update.');
                     }
-                                                                                                                           
 
                     var dataStoreType = app.getParameterByName('datastoretype');
-                    location.replace('/feedback.html?datastoretype=' + (dataStoreType || 'cache') + '&id=' + ids[0]);
-                  ">Feedback</button>
+                    location.replace('/update.html?datastoretype=' + (dataStoreType || 'cache') + '&id=' + ids[0]);
+                  ">Update</button>
+                  <button type="button" class="btn btn-success" onclick="
+                    var dataStoreType = app.getParameterByName('datastoretype');
+                    location.replace('/create.html?datastoretype=' + (dataStoreType || 'cache'));
+                  ">Create</button>
+                  <button type="button" class="btn btn-danger" onclick="
+                    var ids = [];
+
+                    // Get all the selected books
+                    $('input:checkbox.book-checkbox').each(function () {
+                      var id = (this.checked ? $(this).val() : undefined);
+
+                      if (id) {
+                        ids.push(id);
+                      }
+                    });
+
+                    if (ids.length === 0) {
+                      return alert('Please select the books you would like to remove.');
+                    }
+
+                    // Get the datastore type
+                    var dataStoreType = app.getParameterByName('datastoretype');
+                    dataStoreType = dataStoreType || Kinvey.DataStoreType.Cache;
+
+                    // Remove the books
+                    var query = new Kinvey.Query().contains('_id', ids);
+                    var store = Kinvey.DataStore.collection('books', dataStoreType);
+                    store.remove(query)
+                      .then(function(results) {
+                        reload(dataStoreType);
+                      })
+                      .catch(function(error) {
+                        alert(error.message);
+                      });
+                  ">Remove</button>
+                  <button type="button" class="btn btn-default" onclick="
+                    var dataStoreType = app.getParameterByName('datastoretype');
+
+                    if (dataStoreType === Kinvey.DataStoreType.Network) {
+                      return alert('Unable to pull for a NetworkStore.');
+                    }
+
+                    var store = Kinvey.DataStore.collection('books', dataStoreType);
+                    store.pull()
+                      .then(function(books) {
+                        renderTable(books, '#books-table')
+                      })
+                      .catch(function(error) {
+                        alert(error.message);
+                      });
+                  ">Pull</button>
+                  <button type="button" class="btn btn-default" onclick="
+                    var dataStoreType = app.getParameterByName('datastoretype');
+
+                    if (dataStoreType === Kinvey.DataStoreType.Network) {
+                      return alert('Unable to push for a NetworkStore.');
+                    }
+
+                    var store = Kinvey.DataStore.collection('books', dataStoreType);
+                    store.push()
+                      .then(function(results) {
+                        console.log(results);
+                        alert('Sync queue pushed.');
+                      })
+                      .catch(function(error) {
+                        alert(error.message);
+                      });
+                  ">Push</button>
+                  <button type="button" class="btn btn-default" onclick="
+                    var dataStoreType = app.getParameterByName('datastoretype');
+
+                    if (dataStoreType === Kinvey.DataStoreType.Network) {
+                      return alert('Unable to clear the sync queue for a NetworkStore.');
+                    }
+
+                    var store = Kinvey.DataStore.collection('books', dataStoreType);
+                    store.clearSync()
+                      .then(function(results) {
+                        console.log(results);
+                        alert('Sync queue cleared.');
+                      })
+                      .catch(function(error) {
+                        alert(error.message);
+                      });
+                  ">Clear Sync</button>
+
 
 
                 </div>
               </div>
             </div>
           </div>
-   
+        <div class ="footer">
+            <div class="logo"><img src="img/cummins.png"></div>
+        </div>    
     </div>
-    <div class ="footer">
-        <div class="logo"><img src="img/cummins.png"></div>
-    </div> 
+
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/2kinvey-html5-sdk.min.js"></script>
@@ -167,12 +247,11 @@
             + '<td>' + (book.step4 || '') + '</td>\n'
             + '</tr>';*/
             
-        return  '<div class="resultrow"><div class="resultcolumnsteps"><h4 style="font-size:28px;">Step 1</h4></div><div class="resultcolumndirections"><h4 style="font-size:20px;">' + (book.step1 || '') + '</h4></div></div>\n'
-            + '<hr><div class="resultrow"><div class="resultcolumnsteps"><h4 style="font-size:28px;">Step 2</h4></div><div class="resultcolumndirections"><h4 style="font-size:20px;">' + (book.step2 || '') + '</h4></div></div>\n'
-            + '<hr><div class="resultrow"><div class="resultcolumnsteps"><h4 style="font-size:28px;">Step 3</h4></div><div class="resultcolumndirections"><h4 style="font-size:20px;">' + (book.step3 || '') + '</h4></div></div>\n'
-            + '<hr><div class="resultrow"><div class="resultcolumnsteps"><h4 style="font-size:28px;">Step 4</h4></div><div class="resultcolumndirections"><h4 style="font-size:20px;">' + (book.step4 || '') + '</h4></div></div>\n'
-            + '<hr><p>Did this diagnosis not solve your problem? Check this box and click our "Feedback" button below.   <input type="checkbox" value="' + book._id + '" class="book-checkbox"/></p>\n'
-;
+        return '<p><input type="checkbox" value="' + book._id + '" class="book-checkbox"/> Select Diagnosis for feedback</p>\n'
+            + '<hr><div class="resultrow"><p><strong><h4>Step 1</h4>' + (book.step1 || '') + '</strong></p></div>\n'
+            + '<hr><div class="resultrow"><p><strong><h4>Step 2</h4>' + (book.step2 || '') + '</strong></div>\n'
+            + '<hr><div class="resultrow"><p><strong><h4>Step 3</h4>' + (book.step3 || '') + '</strong></div>\n'
+            + '<hr><div class="resultrow"><p><strong><h4>Step 4</h4>' + (book.step4 || '') + '</strong></div>\n';
 
         });
         randIndice = Math.floor((Math.random() * 3));  
@@ -202,12 +281,8 @@
         //Pass the fault code and engine info to other html element
         chosen = code_eng[randIndice];
         console.log(chosen);
-        
-        engines = [{_id:3,model:"6.7L Cummins Turbo Diesel",mileage:150002,hours:3750.8},{_id:2,model:"X12 for Heavy-Duty Truck",mileage:85670,hours:1070.6},{_id:1,model:"X15 Performance Series",mileage:0,hours:0}];
-          
-        chosen_engine = engines[randIndice];
-          
-        var html2 = '<h3>Engine: <strong>'+ chosen_engine.model+'</strong> </h3> \n <h4>Mileage: '+chosen_engine.mileage+' miles</h4>';
+
+        var html2 = '<h3>Engine: <strong>'+ chosen[0]+'</strong> </h3>';
         var html3 = '<h3>Fault Code: <strong>'+ chosen[1]+'</strong> </h3>\n <h4>Diagnosis: '+chosen[2]+'</h4>';
         
           

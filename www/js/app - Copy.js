@@ -22,12 +22,11 @@ var authorizedHrefs = [
   '/logout.html',
   '/profile.html',
   '/update.html',
-  '/upload.html',
-  '/feedback.html'
+  '/upload.html'
 ];
 
-var adminHrefs = [
-     '/',
+var admindash = [
+  '/',
   '/manual.html',    
   '/create.html',
   '/files.html',
@@ -36,8 +35,7 @@ var adminHrefs = [
   '/profile.html',
   '/update.html',
   '/upload.html',
-    '/admin.html',
-  '/feedback.html'
+  '/admin.html'
 ];
 
 // Initialize Kinvey
@@ -46,24 +44,26 @@ var client = Kinvey.init({
   appSecret: '1c52a433ff97402892185788463ce5e0'
 });
 
-var admin = false;
+
+var adminUser;
 
 var activeUser = Kinvey.User.getActiveUser(client);
 console.log(activeUser.data.username);
 
-if (activeUser.data.username ==='admin'){
-    admin = true;
+if (activeUser.data.username == 'admin') {
+    adminUser = 'admin';
 }
-
 
 if (!activeUser && authorizedHrefs.indexOf(location.pathname) !== -1) {
   location.replace('/login.html');
-} else if (activeUser && admin == false && authorizedHrefs.indexOf(location.pathname) === -1) {
-  location.replace('/index.html');
-} else if (admin == true && adminHrefs.indexOf(location.pathname) === -1){
+} else if (adminUser == 'admin' && admindash.indexOf(location.pathname) === -1){
     location.replace('/admin.html');
-}
+} 
+else{ if (activeUser && authorizedHrefs.indexOf(location.pathname) === -1) {
+  location.replace('/index.html');
+}}
 
+  
 
 
 $(document).ready(function() {

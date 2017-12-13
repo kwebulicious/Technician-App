@@ -11,6 +11,7 @@
   "license": "Apache-2.0",
   "private": true,
   "dependencies": {
-    "express": "4.14.1"
+    "express": "4.14.1",
+    "kinvey-html5-sdk": "^3.9.0"
   }
 }

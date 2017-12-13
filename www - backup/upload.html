@@ -40,7 +40,7 @@
               </ul>
             </li>
             <li><a href="/files.html">Files</a></li>
-            <li class="active"><a href="/customendpoint.html">Custom Endpoint</a></li>
+            <li><a href="/customendpoint.html">Custom Endpoint</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
@@ -62,32 +62,71 @@
         <div class="col-md-6 col-md-offset-3">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h3 class="panel-title">Execute Custom Endpoint</h3>
+              <h3 class="panel-title">Upload a File</h3>
             </div>
             <div class="panel-body">
               <form onsubmit="
                 // Prevent the form from being submitted
                 event.preventDefault();
 
-                // Get the endpoint that was entered
-                var endpoint = $('#endpoint').val();
+                // Get entered values
+                var file = $('#file')[0].files[0];
 
-                // Execute the endpoint
-                Kinvey.CustomEndpoint.execute(endpoint)
-                  .then(function(response) {
-                    alert(response);
-                  })
-                  .catch(function(error) {
-                    console.log(error);
-                    alert(error.message);
-                  });
+                if (file) {
+                  var filename = $('#filename').val();
+                  var public = document.getElementById('public').checked;
+                  filename = filename || filename !== '' ? filename : file.name;
+
+                  // Show progress
+                  $('#upload-progress').show(0);
+
+                  console.log(Kinvey.Files);
+                  // Upload the file
+                  Kinvey.Files.upload(file, { filename: filename, public: public }, { timeout: 10 * 60 * 1000 })
+                    .then(function() {
+                      // Hide progress
+                      $('#upload-progress').hide(0);
+
+                      // Show success message
+                      alert('File uploaded!');
+                    })
+                    .catch(function(error) {
+                      // Hide progress
+                      $('#upload-progress').hide(0);
+
+                      // Show error message
+                      alert(error.message);
+                    });
+                } else {
+                  // Hide progress
+                  $('#upload-progress').hide(0);
+
+                  // Show error message
+                  alert('Please select a file to upload.');
+                }
               ">
                 <div class="form-group">
-                  <label for="endpoint">Endpoint</label>
-                  <input type="text" id="endpoint" name="endpoint" class="form-control">
+                  <label for="file">File input</label>
+                  <input type="file" id="file">
                 </div>
-                <button type="submit" class="btn btn-primary">Execute</button>
+                <div class="form-group">
+                  <label for="filename">File Name <small>(optional)</small></label>
+                  <input type="text" class="form-control" id="filename" placeholder="File Name">
+                  <span class="help-block">The file name of the file will be used if no file name is provided.</span>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" id="public">
+                    Upload as a public image
+                  </label>
+                </div>
+                <button type="submit" class="btn btn-primary">Upload</button>
               </form>
+              <div id="upload-progress" class="progress" style="margin-top: 10px; display: none;">
+                <div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 100%">
+                  Uploading File...
+                </div>
+              </div>
             </div>
           </div>
         </div>

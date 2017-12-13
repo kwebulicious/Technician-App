@@ -22,8 +22,7 @@ var authorizedHrefs = [
   '/logout.html',
   '/profile.html',
   '/update.html',
-  '/upload.html',
-  '/feedback.html'
+  '/upload.html'
 ];
 
 var adminHrefs = [
@@ -36,8 +35,7 @@ var adminHrefs = [
   '/profile.html',
   '/update.html',
   '/upload.html',
-    '/admin.html',
-  '/feedback.html'
+    '/admin.html'
 ];
 
 // Initialize Kinvey
