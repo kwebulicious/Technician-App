@@ -4,6 +4,8 @@
 
 You may run this project locally following the steps below or on an existing web server by uploading this project as is such that index.html in the www folder is accesible.
 
+Feel free to clone the repository from Github as well.
+
 ## Setup
 
 1. Download and install npm @ https://www.npmjs.com/get-npm
