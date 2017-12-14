@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/todc-bootstrap.min.css">
     <link rel="stylesheet" href="css/app.css">
+    
+ 
+      
+      
   </head>
   <body>
     <!--[if lte IE 9]>
@@ -71,232 +75,519 @@
     </nav>
 
 <!-- BEGIN CONTENT AREA -->    
-    <h1>ADMIN DASHBOARD</h1>
     <div class="container">
-
-      <div class="row">
-        <h1>Autonamous Diagnostics</h1>
-          <div id="engine" class="column"></div>
-          <div id="code" class="column"></div>
-        <div class="col-md-12">
-            
-          <div class="page-header">
-            <h1>Diagnostics <small>Fault Codes</small></h1>
-          </div> 
-            
-            
-          <div id="books-table" class="table-responsive"></div>
-          <div class="clearfix">
-            <div class="pull-right">
-              <button type="button" class="btn btn-default" onclick="
-                // Get the datastore type
-                var dataStoreType = app.getParameterByName('datastoretype');
-                dataStoreType = dataStoreType || Kinvey.DataStoreType.Cache;
-                reload(dataStoreType);
-              ">Reload</button>
-              <button type="button" class="btn btn-primary" onclick="
-                var ids = [];
-
-                // Get all the selected books
-                $('input:checkbox.book-checkbox').each(function () {
-                  var id = (this.checked ? $(this).val() : undefined);
-
-                  if (id) {
-                    ids.push(id);
-                  }
-                });
-
-                if (ids.length === 0) {
-                  return alert('Please select a book you would like to update.');
-                }
-
-                if (ids.length > 1) {
-                  return alert('Please select only one book to update.');
-                }
-
-                var dataStoreType = app.getParameterByName('datastoretype');
-                location.replace('/update.html?datastoretype=' + (dataStoreType || 'cache') + '&id=' + ids[0]);
-              ">Update</button>
-              <button type="button" class="btn btn-success" onclick="
-                var dataStoreType = app.getParameterByName('datastoretype');
-                location.replace('/create.html?datastoretype=' + (dataStoreType || 'cache'));
-              ">Create</button>
-              <button type="button" class="btn btn-danger" onclick="
-                var ids = [];
-
-                // Get all the selected books
-                $('input:checkbox.book-checkbox').each(function () {
-                  var id = (this.checked ? $(this).val() : undefined);
-
-                  if (id) {
-                    ids.push(id);
-                  }
-                });
-
-                if (ids.length === 0) {
-                  return alert('Please select the books you would like to remove.');
-                }
-
-                // Get the datastore type
-                var dataStoreType = app.getParameterByName('datastoretype');
-                dataStoreType = dataStoreType || Kinvey.DataStoreType.Cache;
-
-                // Remove the books
-                var query = new Kinvey.Query().contains('_id', ids);
-                var store = Kinvey.DataStore.collection('books', dataStoreType);
-                store.remove(query)
-                  .then(function(results) {
-                    reload(dataStoreType);
-                  })
-                  .catch(function(error) {
-                    alert(error.message);
-                  });
-              ">Remove</button>
-              <button type="button" class="btn btn-default" onclick="
-                var dataStoreType = app.getParameterByName('datastoretype');
-
-                if (dataStoreType === Kinvey.DataStoreType.Network) {
-                  return alert('Unable to pull for a NetworkStore.');
-                }
-
-                var store = Kinvey.DataStore.collection('books', dataStoreType);
-                store.pull()
-                  .then(function(books) {
-                    renderTable(books, '#books-table')
-                  })
-                  .catch(function(error) {
-                    alert(error.message);
-                  });
-              ">Pull</button>
-              <button type="button" class="btn btn-default" onclick="
-                var dataStoreType = app.getParameterByName('datastoretype');
-
-                if (dataStoreType === Kinvey.DataStoreType.Network) {
-                  return alert('Unable to push for a NetworkStore.');
-                }
-
-                var store = Kinvey.DataStore.collection('books', dataStoreType);
-                store.push()
-                  .then(function(results) {
-                    console.log(results);
-                    alert('Sync queue pushed.');
-                  })
-                  .catch(function(error) {
-                    alert(error.message);
-                  });
-              ">Push</button>
-              <button type="button" class="btn btn-default" onclick="
-                var dataStoreType = app.getParameterByName('datastoretype');
-
-                if (dataStoreType === Kinvey.DataStoreType.Network) {
-                  return alert('Unable to clear the sync queue for a NetworkStore.');
-                }
-
-                var store = Kinvey.DataStore.collection('books', dataStoreType);
-                store.clearSync()
-                  .then(function(results) {
-                    console.log(results);
-                    alert('Sync queue cleared.');
-                  })
-                  .catch(function(error) {
-                    alert(error.message);
-                  });
-              ">Clear Sync</button>
-                
+        
 
 
-            </div>
-          </div>
+      <div class="row"  >
+          <div class="row">
+              <div class="row">
+                  <div class="column">
+                    <h1>Analytics Dashboard</h1>
+                  </div>
+                  <div class="columnadmin" style="float:none;">
+                    <div class="counter" data-count="156">0</div>
+                    <h4>Registered Users</h4>
+                  </div>
+                  <div class="columnadmin" style="float:none;">
+                    <div class="counter" data-count="1634" style="background-color:rgba(22, 106, 167, .6);">0</div>
+                    <h4>Auto Diagnoses</h4>
+                  </div>
+              </div>
+                    <div class="col-md-12">
+
+                      <div class="page-header">
+
+                      </div> 
+
+
+                      <div id="books-table" class="table-responsive"></div>
+                      <div class="clearfix">
+
+
+
+
+                      </div>
+                    </div>
         </div>
-      </div>
     </div>
 
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/2kinvey-html5-sdk.min.js"></script>
     <script src="js/app.js"></script>
+      <Script>
+        //counter
+            $('.counter').each(function() {
+          var $this = $(this),
+              countTo = $this.attr('data-count');
+
+          $({ countNum: $this.text()}).animate({
+            countNum: countTo
+          },
+
+          {
+
+            duration: 5000,
+            easing:'swing',
+            step: function() {
+              $this.text(Math.floor(this.countNum));
+            },
+            complete: function() {
+              $this.text(this.countNum);
+              //alert('finished');
+            }
+
+          });  
+
+
+
+        });
+        
+
+
+      </Script> 
       
+ <!--    highcharts api  -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/drilldown.js"></script>
+      <div class="container">
+          <div class="row"> 
+            <div id="chart1" style="min-width: 100%; height: 400px; margin: 0 auto"></div>
+          </div>
+          <div class="row">
+            <div id="chart2" style="min-width: 49.5%; height: 400px; display:inline-block;"></div>
+            <div id="chart3" style="min-width: 49.5%; height: 400px; display:inline-block; float:right;"></div>
+          </div>
+      </div>
       
       
       
     <script>
-      // Render the table
-      function renderTable(books, selector) {
-        // Default books to an empty array
-        books = books || [];
-        var code_eng = [];
-        // Create the rows
-        var rows = books.map(function(book) {
-          code_eng.push(
 
-              [book.title, book.author]
-          );
-
-          return '<tr>\n'
-            + '<td><input type="checkbox" value="' + book._id + '" class="book-checkbox"/></td>'
-            + '<td>' + (book.title || '') + '</td>\n'
-            + '<td>' + (book.author || '') + '</td>\n'
-            + '<td>' + (book.isbn || '') + '</td>\n'
-            + '<td>' + (book.review || '') + '</td>\n'
-            + '</tr>';
-        });
-        randIndice = Math.floor((Math.random() * 6));  
-
-        // Create the table
-        var html = '<table class="table table-striped table-bordered">\n'
-          +   '<thead>\n'
-          +     '<tr>\n'
-          +       '<th></th>'
-          +       '<th>Title</th>\n'
-          +       '<th>Author</th>\n'
-          +       '<th>ISBN</th>\n'
-          +       '<th>Review</th>\n'
-          +     '</tr>\n'
-          +   '</thead>\n'
-          +   '<tbody>\n'
-          +     rows[randIndice]
-          +   '</tbody>\n'
-          + '</table>\n';
-
-        //Pass the fault code and engine info to other html element
-        chosen = code_eng[randIndice];
-        console.log(chosen);
-
-        var html2 = '<h3>Engine: '+ chosen[0]+' </h3>';
-        var html3 = '<h3>Fault Code: '+ chosen[1]+' </h3>';
         
-          
-        // Add the html to the page
-        $(selector).html(html);
-        $('#engine').html(html2);
-        $('#code').html(html3);
+    // start theme
+        
+        
+        
+        
+        
 
-      }
+        Highcharts.createElement('link', {
+           href: 'https://fonts.googleapis.com/css?family=Unica+One',
+           rel: 'stylesheet',
+           type: 'text/css'
+        }, null, document.getElementsByTagName('head')[0]);
 
-      function reload(dataStoreType) {
-        // Load the books
-        var store = Kinvey.DataStore.collection('books', dataStoreType);
-        var query = new Kinvey.Query();
-        store.find()
-          .subscribe(function(books) {
-            return renderTable(books, '#books-table')
-          });
-      }
+        Highcharts.theme = {
+           colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
+              '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
+           chart: {
+              backgroundColor: {
+                 linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
+                 stops: [
+                    [0, '#2a2a2b'],
+                    [1, '#3e3e40']
+                 ]
+              },
+              style: {
+                 fontFamily: '\'Unica One\', sans-serif'
+              },
+              plotBorderColor: '#606063'
+           },
+           title: {
+              style: {
+                 color: '#E0E0E3',
+                 textTransform: 'uppercase',
+                 fontSize: '20px'
+              }
+           },
+           subtitle: {
+              style: {
+                 color: '#E0E0E3',
+                 textTransform: 'uppercase'
+              }
+           },
+           xAxis: {
+              gridLineColor: '#707073',
+              labels: {
+                 style: {
+                    color: '#E0E0E3'
+                 }
+              },
+              lineColor: '#707073',
+              minorGridLineColor: '#505053',
+              tickColor: '#707073',
+              title: {
+                 style: {
+                    color: '#A0A0A3'
 
-      $(document).on('app.ready', function() {
-        Kinvey.User.getActiveUser().registerForLiveService()
-          .then(() => {
-            // Get the datastore type
-            var dataStoreType = app.getParameterByName('datastoretype');
-            dataStoreType = dataStoreType || Kinvey.DataStoreType.Cache;
-            reload(dataStoreType);
-          })
-          .catch((error) => {
-            alert(error.message);
-          });
-      });
+                 }
+              }
+           },
+           yAxis: {
+              gridLineColor: '#707073',
+              labels: {
+                 style: {
+                    color: '#E0E0E3'
+                 }
+              },
+              lineColor: '#707073',
+              minorGridLineColor: '#505053',
+              tickColor: '#707073',
+              tickWidth: 1,
+              title: {
+                 style: {
+                    color: '#A0A0A3'
+                 }
+              }
+           },
+           tooltip: {
+              backgroundColor: 'rgba(0, 0, 0, 0.85)',
+              style: {
+                 color: '#F0F0F0'
+              }
+           },
+           plotOptions: {
+              series: {
+                 dataLabels: {
+                    color: '#B0B0B3'
+                 },
+                 marker: {
+                    lineColor: '#333'
+                 }
+              },
+              boxplot: {
+                 fillColor: '#505053'
+              },
+              candlestick: {
+                 lineColor: 'white'
+              },
+              errorbar: {
+                 color: 'white'
+              }
+           },
+           legend: {
+              itemStyle: {
+                 color: '#E0E0E3'
+              },
+              itemHoverStyle: {
+                 color: '#FFF'
+              },
+              itemHiddenStyle: {
+                 color: '#606063'
+              }
+           },
+           credits: {
+              style: {
+                 color: '#666'
+              }
+           },
+           labels: {
+              style: {
+                 color: '#707073'
+              }
+           },
+
+           drilldown: {
+              activeAxisLabelStyle: {
+                 color: '#F0F0F3'
+              },
+              activeDataLabelStyle: {
+                 color: '#F0F0F3'
+              }
+           },
+
+           navigation: {
+              buttonOptions: {
+                 symbolStroke: '#DDDDDD',
+                 theme: {
+                    fill: '#505053'
+                 }
+              }
+           },
+
+           // scroll charts
+           rangeSelector: {
+              buttonTheme: {
+                 fill: '#505053',
+                 stroke: '#000000',
+                 style: {
+                    color: '#CCC'
+                 },
+                 states: {
+                    hover: {
+                       fill: '#707073',
+                       stroke: '#000000',
+                       style: {
+                          color: 'white'
+                       }
+                    },
+                    select: {
+                       fill: '#000003',
+                       stroke: '#000000',
+                       style: {
+                          color: 'white'
+                       }
+                    }
+                 }
+              },
+              inputBoxBorderColor: '#505053',
+              inputStyle: {
+                 backgroundColor: '#333',
+                 color: 'silver'
+              },
+              labelStyle: {
+                 color: 'silver'
+              }
+           },
+
+           navigator: {
+              handles: {
+                 backgroundColor: '#666',
+                 borderColor: '#AAA'
+              },
+              outlineColor: '#CCC',
+              maskFill: 'rgba(255,255,255,0.1)',
+              series: {
+                 color: '#7798BF',
+                 lineColor: '#A6C7ED'
+              },
+              xAxis: {
+                 gridLineColor: '#505053'
+              }
+           },
+
+           scrollbar: {
+              barBackgroundColor: '#808083',
+              barBorderColor: '#808083',
+              buttonArrowColor: '#CCC',
+              buttonBackgroundColor: '#606063',
+              buttonBorderColor: '#606063',
+              rifleColor: '#FFF',
+              trackBackgroundColor: '#404043',
+              trackBorderColor: '#404043'
+           },
+
+           // special colors for some of the
+           legendBackgroundColor: 'rgba(0, 0, 0, 0.5)',
+           background2: '#505053',
+           dataLabelsColor: '#B0B0B3',
+           textColor: '#C0C0C0',
+           contrastTextColor: '#F0F0F3',
+           maskColor: 'rgba(255,255,255,0.3)'
+        };
+
+        // Apply the theme
+        Highcharts.setOptions(Highcharts.theme);  
+        
+        
+        
+        
+      //  end theme        
+        
+        
+        
+        
+        
+        
+            Highcharts.chart('chart1', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Diagnosis by Engine Model'
+            },
+            xAxis: {
+                categories: ['X15 Performance Series', 'X12 for Heavy-Duty Truck', '6.7L Cummins Turbo Diesel']
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Total Code Diagnosis'
+                },
+                stackLabels: {
+                    enabled: true,
+                    style: {
+                        fontWeight: 'bold',
+                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                    }
+                }
+            },
+            legend: {
+                align: 'right',
+                x: -30,
+                verticalAlign: 'top',
+                y: 25,
+                floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                borderColor: '#CCC',
+                borderWidth: 1,
+                shadow: false
+            },
+            tooltip: {
+                headerFormat: '<b>{point.x}</b><br/>',
+                pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+            },
+            plotOptions: {
+                column: {
+                    stacking: 'normal',
+                    dataLabels: {
+                        enabled: true,
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                    }
+                }
+            },
+            series: [{
+                name: 'P3437',
+                data: [1, 1, 2]
+            }, {
+                name: 'P2516',
+                data: [0, 2, 4]
+            }, {
+                name: 'P0091',
+                data: [0, 2, 2]
+            }]
+            });
+            
+        
+        
+            Highcharts.chart('chart2', {
+            chart: {
+                type: 'pie'
+            },
+            title: {
+                text: '% Of Total Mileage By Engine Fault Code'
+            },
+            subtitle: {
+                text: 'Click to drill down'
+            },
+            plotOptions: {
+                series: {
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.name}: {point.y:.1f}%'
+                    }
+                }
+            },
+
+            tooltip: {
+                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+            },
+            series: [{
+                name: 'Engines',
+                colorByPoint: true,
+                data: [{
+                    name: 'X15 Performance Series',
+                    y: 0,
+                    drilldown: 'X15 Performance Series'
+                }, {
+                    name: 'X12 for Heavy-Duty Truck',
+                    y: 41,
+                    drilldown: 'X12 for Heavy-Duty Truck'
+                }, {
+                    name: '6.7L Cummins Turbo Diesel',
+                    y: 59,
+                    drilldown: '6.7L Cummins Turbo Diesel'
+                }]
+            }],
+            drilldown: {
+                series: [{
+                    name: 'X15 Performance Series',
+                    id: 'X15 Performance Series',
+                    data: [
+                        ['P3437', 0],
+                        ['P2516', 0],
+                        ['P0091', 0]
+                        
+                    ]
+                }, {
+                    name: 'X12 for Heavy-Duty Truck',
+                    id: 'X12 for Heavy-Duty Truck',
+                    data: [
+                        ['P3437', 27],
+                        ['P2516', 35],
+                        ['P0091', 38]
+                    ]
+                }, {
+                    name: '6.7L Cummins Turbo Diesel',
+                    id: '6.7L Cummins Turbo Diesel',
+                    data: [
+                        ['P3437', 8],
+                        ['P2516', 62],
+                        ['P0091', 30]
+                    ]
+                }]
+            }
+        });
+      
+        
+        $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=usdeur.json&callback=?', function (data) {
+
+        Highcharts.chart('chart3', {
+            chart: {
+                zoomType: 'x'
+            },
+            title: {
+                text: 'Average Number of Hourly Diagnoses'
+            },
+            subtitle: {
+                text: document.ontouchstart === undefined ?
+                        'Per Day' : 'Per Day'
+            },
+            xAxis: {
+                type: 'datetime'
+            },
+            yAxis: {
+                title: {
+                    text: 'Average Hourly Diagnoses'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                area: {
+                    fillColor: {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                    },
+                    marker: {
+                        radius: 2
+                    },
+                    lineWidth: 1,
+                    states: {
+                        hover: {
+                            lineWidth: 1
+                        }
+                    },
+                    threshold: null
+                }
+            },
+
+            series: [{
+                type: 'area',
+                name: 'Rate of Diagnosis',
+                data: data
+            }]
+        });
+    });
+        
+     
+
+        
+        
     </script>
-
       
     <div class ="footer">
         <div class="logo"><img src="img/cummins.png"></div>

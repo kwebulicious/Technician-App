@@ -74,43 +74,13 @@
       <div class="row">
         <div class="col-md-12">
           <div class="page-header">
-            <h1>Files Collection</h1>
+            <h1>Manuals Collection</h1>
           </div>
           <div id="files-table" class="table-responsive"></div>
           <div class="clearfix">
             <div class="pull-right">
               <button type="button" class="btn btn-default" onclick="reload();">Reload</button>
-              <button type="button" class="btn btn-success" onclick="location.replace('/upload.html');">Upload</button>
-              <button type="button" class="btn btn-danger" onclick="
-                var ids = [];
 
-                // Get all the selected files
-                $('input:checkbox.file-checkbox').each(function () {
-                  var id = (this.checked ? $(this).val() : undefined);
-
-                  if (id) {
-                    ids.push(id);
-                  }
-                });
-
-                if (ids.length === 0) {
-                  return alert('Please select the files you would like to remove.');
-                }
-
-                if (ids.length > 1) {
-                  return alert('Please select only one file to remove.');
-                }
-
-                // Remove the file
-                Kinvey.Files.removeById(ids[0])
-                  .then(function(results) {
-                    console.log(results);
-                    reload();
-                  })
-                  .catch(function(error) {
-                    alert(error.message);
-                  });
-              ">Remove</button>
             </div>
           </div>
         </div>
@@ -130,24 +100,23 @@
 
           // Create the rows
           var rows = files.map(function(file) {
-            return '<tr>\n'
-              + '<td><input type="checkbox" value="' + file._id + '" class="file-checkbox"/></td>'
-              + '<td>' + file._filename + '</td>\n'
-              + '<td>' + file.mimeType + '</td>\n'
-              + '<td>' + file._public + '</td>\n'
-              + '<td><a target="_blank" href="' + file._downloadURL + '">Download URL</a></td>\n'
-              + '</tr>';
+            if (file.mimeType === "application/pdf"){
+                  return '<tr>\n'
+
+                  + '<td>' + file._filename + '</td>\n'
+                  + '<td>' + file.Description + '</td>\n'
+                  + '<td><a target="_blank" href="' + file._downloadURL + '">Download URL</a></td>\n'
+                  + '</tr>';
+            }
           });
 
           // Create the table
           var html = '<table class="table table-striped">\n'
             +   '<thead>\n'
             +     '<tr>\n'
-            +       '<th></th>'
-            +       '<th>Filename</th>\n'
-            +       '<th>MIME Type</th>\n'
-            +       '<th>Public</th>\n'
-            +       '<th>Url</th>\n'
+            +       '<th>Resource Name</th>\n'
+            +       '<th>Description</th>\n'
+            +       '<th>Download</th>\n'
             +     '</tr>\n'
             +   '</thead>\n'
             +   '<tbody>\n'

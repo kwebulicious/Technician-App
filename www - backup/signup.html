@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/todc-bootstrap.min.css">
     <link rel="stylesheet" href="css/app.css">
   </head>
-  <body>
+  <body style="background-image: url('img/background.png'); background-size: 100% 100%;">
     <!--[if lte IE 9]>
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
     <![endif]-->
@@ -30,9 +30,10 @@
                 // Get entered values
                 var data = {
                   username: $('#username').val(),
-                  password: $('#password').val(),
                   firstname: $('#firstname').val(),
-                  lastname: $('#lastname').val()
+                  lastname: $('#lastname').val(),
+                  password: $('#password').val(),
+                  Region: $('#Region').val()
                 };
 
                 // Login to Kinvey
@@ -59,6 +60,17 @@
                 <div class="form-group">
                   <label for="lastname">Last Name</label>
                   <input type="text" class="form-control" id="lastname" placeholder="Last Name">
+                </div>
+                  
+                <div class="form-group"> 
+                    <label for="Region">Region</label>
+                    <select class="form-control" id="Region" placeholder="Region">
+                        <option value="">Select a region</option>
+                        <option value="uscan">US & Canada</option>
+                        <option value="emea">EMEA</option>
+                        <option value="southam">South America</option>
+                        <option value="apac">APAC</option>
+                      </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
               </form>

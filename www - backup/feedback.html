@@ -70,69 +70,81 @@
       </div>
     </nav>
 
-    <div class="container" style="background-image: url('img/profilebackground.png'); background-size: 100% 100%;">
+    <div class="container">
       <div class="row">
         <div class="col-md-6 col-md-offset-3">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h2 class="panel-title">Profile</h2>
+              <h3 class="panel-title">Was our diagnosis incorrect? We want to know!</h3>
             </div>
             <div class="panel-body">
               <form onsubmit="
-                 // Prevent the form from being submitted
                 event.preventDefault();
 
-                // Get the active user
-                var activeUser = Kinvey.User.getActiveUser();
-
-                // Prevent the form from being submitted
-                event.preventDefault();
+                // Get the datastore type
+                var dataStoreType = app.getParameterByName('datastoretype');
+                dataStoreType = dataStoreType || Kinvey.DataStoreType.Cache;
 
                 // Get entered values
-                var data = {
-                  username: $('#username').val(),
-                  firstname: $('#firstname').val(),
-                  lastname: $('#lastname').val(),
-                  password: $('#password').val(),
-                  Region: $('#Region').val()
+                var service = {
+                              
+                  //_id: app.getParameterByName('id'),
+                  ESN: $('#esn').val(),
+                  mileage: $('#mileage').val(),
+                  code: $('#code').val(),
+                  fixedcode: $('#fixedcode').val(),
+                  correctdiag: 0
                 };
 
-                // Login to Kinvey
-                activeUser.update(data)
-                  .then(function() {
-                    alert('Profile updated!');
+                              
+                if (service.code === service.fixedcode) {
+                      return alert('The fixed code is the same as the diagnosed code, nice try though');
+                    } 
+                // Save the service
+                var store = Kinvey.DataStore.collection('servicehistory', dataStoreType);
+                store.save(service)
+                  .then(function(service) {
+                    
+                    redirect();
+                    alert('Thank you for submitting feedback on our diagnostic services');
+                              
+                    var delayInMilliseconds = 2500; //2.5 seconds
+                    //read my thank you message before I redirect you =]
+                    function redirect() {
+                      setTimeout(function() { location.replace('/index.html?datastoretype=' + dataStoreType); }, delayInMilliseconds);
+                    }
+                              
                   })
                   .catch(function(error) {
                     alert(error.message);
                   });
-              ">
+                ">
                 <div class="form-group">
-                  <label for="username">Username</label>
-                  <input type="text" class="form-control" id="username" placeholder="Username">
-                </div>
-                <div class="form-group">
-                  <label for="password">Password</label>
-                  <input type="text" class="form-control" id="password" placeholder="Password">
-                </div>
-                <div class="form-group"> 
-                    <label for="Region">Region</label>
-                    <select class="form-control" id="Region" placeholder="Region">
-                        <option value="">Select a region</option>
-                        <option value="uscan">US & Canada</option>
-                        <option value="emea">EMEA</option>
-                        <option value="southam">South America</option>
-                        <option value="apac">APAC</option>
-                      </select>
+                  <label for="title">Engine</label>
+                  <input type="text" class="form-control" id="engine" placeholder="Title" disabled>
                 </div>
                 <div class="form-group">
-                  <label for="firstname">First Name</label>
-                  <input type="text" class="form-control" id="firstname" placeholder="First Name">
+                  <label for="esn">ESN</label>
+                  <input type="text" class="form-control" id="esn" placeholder="esn" disabled>
                 </div>
                 <div class="form-group">
-                  <label for="lastname">Last Name</label>
-                  <input type="text" class="form-control" id="lastname" placeholder="Last Name">
+                  <label for="isbn">Mileage</label>
+                  <input type="text" class="form-control" id="mileage" placeholder="Mileage" disabled>
                 </div>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <div class="form-group">
+                  <label for="code">Diagnosed Fault Code</label>
+                  <input type="text" class="form-control" id="code" placeholder="Fault Code" disabled>
+                </div>
+                <div class="form-group">
+                  <label for="fixedcode">Resolved Fault Code</label><br />
+                    <select id="fixedcode">
+                        <option value="P3437">P3437</option>
+                        <option value="P0091">P0091</option>
+                        <option value="P2516">P2516</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
               </form>
             </div>
           </div>
@@ -146,23 +158,24 @@
     <script src="js/app.js"></script>
     <script>
       $(document).on('app.ready', function() {
-        // Get the active user
-        var activeUser = Kinvey.User.getActiveUser();
-
-        if (activeUser) {
-          // Update the form values
-          $('#username').val(activeUser.data.username);
-          $('#password').val(activeUser.data.password);
-          $('#firstname').val(activeUser.data.firstname || '');
-          $('#lastname').val(activeUser.data.lastname || '');
-          $('#Region').val(activeUser.data.Region);
-        }
+        
+        //hardcoded because you walked us around the block like dogs @cummins #wasteoftime
+        var engines = [{_id:3,model:"6.7L Cummins Turbo Diesel",mileage:150002,hours:3750.8},{_id:2,model:"X12 for Heavy-Duty Truck",mileage:85670,hours:1070.6},{_id:1,model:"X15 Performance Series",mileage:0,hours:0}]; 
+        var randIndice = Math.floor((Math.random() * 3));       
+        var chosen_engine = engines[randIndice];  
+        
+        //grabs the fault code info
+        var dataStoreType = app.getParameterByName('datastoretype');
+        var id = app.getParameterByName('id');
+        var store = Kinvey.DataStore.collection('books', dataStoreType);
+        store.findById(id)
+          .subscribe(function(book) {
+            $('#code').val(book.code);
+            $('#engine').val(chosen_engine.model);
+            $('#mileage').val(chosen_engine.mileage);
+            $('#esn').val(chosen_engine._id);
+          });
       });
     </script>
-      
-      
-    <div class ="footer-profile">
-        <div class="logo"><img src="img/cummins.png"></div>
-    </div>
   </body>
 </html>

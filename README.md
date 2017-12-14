@@ -1,26 +1,24 @@
-Kenny was here!
 
-# HTML5-Starter
-A Kinvey starter application that uses the Kinvey HTML5 3.x SDK.
+
+# Cummins CDS Proof of Concept
+
+You may run this project locally following the steps below or on an existing web server by uploading this project as is such that index.html in the www folder is accesible.
 
 ## Setup
 
-1. Clone the repo.
-2. Create an app backend using the [console](http://console.kinvey.com) for your application.
-2. Create a user (with password) using the [console](http://console.kinvey.com) for your application.
-3. Open `www/js/app.js` in a text editor
-4. Search for `<appKey>` and `<appSecret>` and replace with your `appKey` and `appSecret` for the app you created in step 1.
-5. Create a `books` collection and import `data/books.json`.
+1. Download and install npm @ https://www.npmjs.com/get-npm
 
-**Mobile Identity Connect Setup** *<small>(Optional)</small>*
-
-6. Open `www/js/app.js` in a text editor.
-7. Serach for `<micRedirectUr>` and replace with your `redirectUri` for Mobile Identity Connect
 
 ## Run
 
-1. Execute `npm install`.
-2. Execute `npm start`.
+1. Execute `npm install` in the command line within the project folder/repository.
+2. Execute `npm start` in the command line within the project folder/repository.
+3. Open a browser, ahem firefox, and go to localhost:3000/login.html/
+
+use the username:password "admin:admin" to login and view all content
+use the username:password "technician:tech" to view all content except the dashboard
+
+
 
 ## License
 
